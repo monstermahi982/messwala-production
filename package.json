@@ -1,0 +1,25 @@
+{
+  "name": "messwala-serverless",
+  "version": "1.0.0",
+  "description": "messwala testing",
+  "scripts": {
+    "dev": "nodemon server",
+    "deploy": "sls deploy",
+    "test": "serverless offline"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.1",
+    "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.1",
+    "multer": "^1.4.4",
+    "redis": "^4.0.3",
+    "serverless-http": "^2.7.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "serverless-offline": "^8.4.0"
+  }
+}

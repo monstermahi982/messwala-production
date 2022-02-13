@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../messwala_app/messwala-frontend"
+		},
+		{
+			"path": "../../messwala_app/admin"
+		},
+		{
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
