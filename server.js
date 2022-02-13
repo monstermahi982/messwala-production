@@ -26,7 +26,7 @@ const app = express();
 
 const mode = process.env.MODE;
 
-if (mode == 'dev') {
+if (mode === 'dev') {
     // mongodb connection
     mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
     const db = mongoose.connection;
@@ -35,7 +35,7 @@ if (mode == 'dev') {
     db.once('open', () => {
         console.log('DB is connected :- ' + mode);
     })
-} else if (mode == 'prod') {
+} else if (mode === 'prod') {
     // mongodb connection
     mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
     const db = mongoose.connection;
@@ -71,7 +71,7 @@ app.use('/api/static', staticsRoutes);
 // error handlers
 app.use(userAuthHandler);
 
-if (mode == 'dev') {
+if (mode === 'dev') {
     // app port
     app.listen((PORT), () => console.log(`listening on port ${PORT}`))
 }
