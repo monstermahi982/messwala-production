@@ -5,7 +5,7 @@ const auth = async (req, res, next) => {
     let authHeader = req.headers.authorization;
 
     if (!authHeader) {
-        return res.json({ data: "token not found" });
+        return res.json("token not found");
     }
 
     const token = authHeader.split(" ")[1];
@@ -14,7 +14,7 @@ const auth = async (req, res, next) => {
 
         const { id, name, email } = await JwtService.verify(token);
         if (!email) {
-            return res.json({ data: "not verified" })
+            return res.json("not verified")
         }
         const user = {
             name, email, id

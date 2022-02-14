@@ -1,21 +1,22 @@
 const express = require('express');
 const adminMessController = require('../Controllers/adminMessController');
+const adminToken = require('../Middlewares/adminToken');
 
 const router = express.Router();
 
-router.get('/', adminMessController.getAll)
+router.get('/', adminToken, adminMessController.getAll)
 
-router.post('/', adminMessController.addMess)
+router.post('/', adminToken, adminMessController.addMess)
 
-router.get('/:id', adminMessController.getOne)
+router.get('/:id', adminToken, adminMessController.getOne)
 
-router.put('/:id', adminMessController.updateInfo)
+router.put('/:id', adminToken, adminMessController.updateInfo)
 
-router.put('/owner/:id', adminMessController.updateOwner)
+router.put('/owner/:id', adminToken, adminMessController.updateOwner)
 
-router.put('/block/:id', adminMessController.blockMess)
+router.put('/block/:id', adminToken, adminMessController.blockMess)
 
-router.put('/unblock/:id', adminMessController.unblockMess)
+router.put('/unblock/:id', adminToken, adminMessController.unblockMess)
 
 router.delete('/:id', adminMessController.deleteMess)
 

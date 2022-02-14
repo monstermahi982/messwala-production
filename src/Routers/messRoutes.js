@@ -9,15 +9,15 @@ router.get('/', messController.getAllMess)
 
 // router.get('/:id', auth, messController.getMessMenu)
 
-router.get('/:id', messController.getMessMenu)
+router.get('/:id', auth, messController.getMessMenu)
 
-router.get('/info/:id', messController.messDeatils)
+router.get('/info/:id', auth, messController.messDeatils)
 
-router.put('/info/:id', messController.updateInfo)
+router.put('/info/:id', auth, messController.updateInfo)
 
 router.put('/poster/:id', upload, messController.updatePoster)
 
-router.post('/', messController.addMess)
+router.post('/', auth, messController.addMess)
 
 router.get('/statics/:id', messController.ownerStatics)
 

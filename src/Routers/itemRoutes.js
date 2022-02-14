@@ -1,13 +1,14 @@
 const express = require('express');
 const itemController = require('../Controllers/itemController');
-
+const auth = require('../Middlewares/auth');
 const router = express.Router();
+const adminToken = require('../Middlewares/adminToken');
 
-router.get('/', itemController.get)
+router.get('/', auth, itemController.get)
 
-router.post('/', itemController.add)
+router.post('/', adminToken, itemController.add)
 
-router.delete('/:id', itemController.delete)
+router.delete('/:id', adminToken, itemController.delete)
 
 
 module.exports = router;

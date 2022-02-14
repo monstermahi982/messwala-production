@@ -1,16 +1,18 @@
 const express = require('express');
 const menuController = require('../Controllers/menuController');
 const upload = require('../Services/UploadImage');
+const auth = require('../Middlewares/auth');
+const adminToken = require('../Middlewares/adminToken');
 
 const router = express.Router();
 
-router.get('/', menuController.getMenu)
+router.get('/', adminToken, menuController.getMenu)
 
-router.get('/:id', menuController.getOneMenu)
+router.get('/:id', auth, menuController.getOneMenu)
 
-router.post('/', menuController.uploadMenu)
+router.post('/', auth, menuController.uploadMenu)
 
-router.post('/uploadImage', upload, menuController.uploadImage)
+router.post('/uploadImage', auth, upload, menuController.uploadImage)
 
 router.delete('/:id', menuController.deleteMenu)
 
