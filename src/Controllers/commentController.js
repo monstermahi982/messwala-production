@@ -72,6 +72,15 @@ const commentController = {
         // getting from token
         const { name, email } = req.user;
 
+        try {
+            const commentCount = await Comment.find({ email, mess_id }).count();
+            if (commentCount > 5) {
+                return res.json("limit reached");
+            }
+        } catch (error) {
+            return next(error);
+        }
+
         const new_comment = new Comment({
             mess_id,
             name,
