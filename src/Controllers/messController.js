@@ -171,6 +171,12 @@ const messController = {
             console.log(error);
         }
 
+        try {
+            owner_info = await Owner.findOne({ "mess_id": _id }).select('-updatedAt -__v -createdAt -mess_id -owner_email -_id -owner_password');
+        } catch (error) {
+            return next(error);
+        }
+
         let menu_data = await {
             _id,
             mess_name,
@@ -183,7 +189,8 @@ const messController = {
             like_count,
             dislike_count,
             comment,
-            menu_image
+            menu_image,
+            owner_info
         }
 
 
@@ -227,7 +234,7 @@ const messController = {
 
         try {
 
-            owner_info = await Owner.findOne({ "mess_id": req.params.id });
+            owner_info = await Owner.findOne({ "mess_id": req.params.id }).select('-updatedAt -__v -owner_password');
 
         } catch (error) {
             return next(error);
