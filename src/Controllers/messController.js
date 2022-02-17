@@ -53,6 +53,7 @@ const messController = {
                 menu_list = []
                 if (menu) {
                     menu_list = menu.menu_list;
+                    menu_list = menu_list.slice(0, 3)
                 }
 
 
