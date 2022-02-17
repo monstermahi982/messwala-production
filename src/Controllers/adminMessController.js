@@ -54,7 +54,7 @@ const adminMessController = {
             const like_count = await Action.find({ mess_id: _id, like: true }).count();
             const dislike_count = await Action.find({ mess_id: _id, dislike: true }).count();
             const comment = await Comment.find({ mess_id: _id }).select('-updatedAt -__v');
-            const owner = await Owner.findOne({ mess_id: _id }).select('-updatedAt -__v -createdAt')
+            const owner = await Owner.findOne({ mess_id: _id }).select('-updatedAt -__v -createdAt -owner_password')
 
             mess_info = {
                 mess, views, like_count, dislike_count, action, comment, owner
