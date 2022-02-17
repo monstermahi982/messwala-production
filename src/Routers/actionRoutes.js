@@ -2,15 +2,16 @@ const express = require('express');
 const actionController = require('../Controllers/actionController');
 const adminToken = require('../Middlewares/adminToken');
 const auth = require('../Middlewares/auth');
+const ipLimiting = require('../Middlewares/ipLimiting');
 
 const router = express.Router();
 
-router.get('/', adminToken, actionController.getActions)
+router.get('/', ipLimiting, adminToken, actionController.getActions)
 
-router.post('/like', auth, actionController.actionLike)
+router.post('/like', ipLimiting, auth, actionController.actionLike)
 
-router.post('/dislike', auth, actionController.actionDislike)
+router.post('/dislike', ipLimiting, auth, actionController.actionDislike)
 
-router.delete('/:id', adminToken, actionController.deleteAction)
+router.delete('/:id', ipLimiting, adminToken, actionController.deleteAction)
 
 module.exports = router;

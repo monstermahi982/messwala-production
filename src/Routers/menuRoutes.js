@@ -3,18 +3,19 @@ const menuController = require('../Controllers/menuController');
 const upload = require('../Services/UploadImage');
 const auth = require('../Middlewares/auth');
 const adminToken = require('../Middlewares/adminToken');
+const ipLimiting = require('../Middlewares/ipLimiting');
 
 const router = express.Router();
 
-router.get('/', adminToken, menuController.getMenu)
+router.get('/', ipLimiting, adminToken, menuController.getMenu)
 
-router.get('/:id', auth, menuController.getOneMenu)
+router.get('/:id', ipLimiting, auth, menuController.getOneMenu)
 
-router.post('/', auth, menuController.uploadMenu)
+router.post('/', ipLimiting, auth, menuController.uploadMenu)
 
-router.post('/uploadImage', auth, upload, menuController.uploadImage)
+router.post('/uploadImage', ipLimiting, auth, upload, menuController.uploadImage)
 
-router.delete('/:id', menuController.deleteMenu)
+router.delete('/:id', ipLimiting, menuController.deleteMenu)
 
 
 module.exports = router;

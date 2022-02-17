@@ -3,12 +3,13 @@ const itemController = require('../Controllers/itemController');
 const auth = require('../Middlewares/auth');
 const router = express.Router();
 const adminToken = require('../Middlewares/adminToken');
+const ipLimiting = require('../Middlewares/ipLimiting');
 
-router.get('/', auth, itemController.get)
+router.get('/', ipLimiting, auth, itemController.get)
 
-router.post('/', adminToken, itemController.add)
+router.post('/', ipLimiting, adminToken, itemController.add)
 
-router.delete('/:id', adminToken, itemController.delete)
+router.delete('/:id', ipLimiting, adminToken, itemController.delete)
 
 
 module.exports = router;

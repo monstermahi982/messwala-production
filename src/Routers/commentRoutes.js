@@ -2,15 +2,16 @@ const express = require('express');
 const commentController = require('../Controllers/commentController');
 const auth = require('../Middlewares/auth');
 const adminToken = require('../Middlewares/adminToken');
+const ipLimiting = require('../Middlewares/ipLimiting');
 
 const router = express.Router();
 
-router.post('/', auth, commentController.addComment)
+router.post('/', ipLimiting, auth, commentController.addComment)
 
-router.delete('/:id', adminToken, commentController.deleteComment)
+router.delete('/:id', ipLimiting, adminToken, commentController.deleteComment)
 
-router.get('/', adminToken, commentController.getComment)
+router.get('/', ipLimiting, adminToken, commentController.getComment)
 
-router.get('/:id', adminToken, commentController.getMessComments)
+router.get('/:id', ipLimiting, adminToken, commentController.getMessComments)
 
 module.exports = router;

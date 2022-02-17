@@ -2,19 +2,20 @@ const express = require('express');
 const userAuthController = require('../Controllers/userAuthController');
 const adminToken = require('../Middlewares/adminToken');
 const auth = require('../Middlewares/auth');
+const ipLimiting = require('../Middlewares/ipLimiting');
 
 const router = express.Router();
 
-router.post('/register', userAuthController.register)
+router.post('/register', ipLimiting, userAuthController.register)
 
-router.post('/login', userAuthController.login)
+router.post('/login', ipLimiting, userAuthController.login)
 
-router.get('/', adminToken, userAuthController.getUsers)
+router.get('/', ipLimiting, adminToken, userAuthController.getUsers)
 
-router.delete('/:id', adminToken, userAuthController.deleteUser)
+router.delete('/:id', ipLimiting, adminToken, userAuthController.deleteUser)
 
-router.put('/block/:id', adminToken, userAuthController.blockUser)
+router.put('/block/:id', ipLimiting, adminToken, userAuthController.blockUser)
 
-router.put('/unblock/:id', adminToken, userAuthController.unblockUser)
+router.put('/unblock/:id', ipLimiting, adminToken, userAuthController.unblockUser)
 
 module.exports = router;
