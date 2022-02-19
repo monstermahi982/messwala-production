@@ -41,7 +41,7 @@ const messController = {
             for (let i = 0; i < messes.length; i++) {
 
                 // array destructring
-                const { _id, mess_name, thali_price, mess_address, mess_poster } = messes[i];
+                const { _id, mess_name, slug, thali_price, mess_address, mess_poster } = messes[i];
 
                 // view, like, dislike code
                 views = await View.find().count();
@@ -61,6 +61,7 @@ const messController = {
                 const temp_data = {
                     _id,
                     mess_name,
+                    slug,
                     mess_address,
                     thali_price,
                     mess_poster,
@@ -104,12 +105,6 @@ const messController = {
         //     return next(e);
         // }
 
-        // checking object id valid or not
-        const isValid = mongoose.Types.ObjectId.isValid(req.params.id);
-        if (!isValid) {
-            return res.json({ data: "id is not valid" })
-        }
-
         // using cached data
         const cachemess = await redis.get(req.params.id);
         if (cachemess !== null) {
@@ -121,8 +116,8 @@ const messController = {
 
         try {
 
-            menu = await Mess.findById({ _id: req.params.id }).select('-updatedAt -__v').sort({ _id: -1 });
-
+            // menu = await Mess.findOne({ $or: [{ slug: req.params.id }, { _id: req.params.id }] }).select('-updatedAt -__v').sort({ _id: -1 });
+            menu = await Mess.findOne({ slug: req.params.id }).select('-updatedAt -__v');
             if (!menu) {
                 return res.json({ data: "id not found" })
             }

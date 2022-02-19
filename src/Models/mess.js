@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+var slug = require('mongoose-slug-generator');
+mongoose.plugin(slug);
 
 const messSchema = new Schema({
 
     // mess info
     mess_name: { type: String, required: true },
+    slug: { type: String, slug: "mess_name", slug_padding_size: 1, unique: true },
     thali_price: { type: Number, required: true },
     mess_address: { type: String, required: true },
     mess_poster: { type: String, required: true },
