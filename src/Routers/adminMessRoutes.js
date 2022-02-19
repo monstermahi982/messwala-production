@@ -9,6 +9,8 @@ router.get('/', ipLimiting, adminToken, adminMessController.getAll)
 
 router.post('/', ipLimiting, adminToken, adminMessController.addMess)
 
+router.put('/blockall', ipLimiting, adminToken, adminMessController.blockAllMess)
+
 router.get('/:id', ipLimiting, adminToken, adminMessController.getOne)
 
 router.put('/:id', ipLimiting, adminToken, adminMessController.updateInfo)

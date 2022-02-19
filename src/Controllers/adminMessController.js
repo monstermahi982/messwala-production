@@ -324,6 +324,26 @@ const adminMessController = {
 
         res.json("mess unblocked");
 
+    },
+
+    async blockAllMess(req, res, next) {
+
+        try {
+
+            const messStatus = await Mess.updateMany({}, {
+                "is_active": false
+            }, { new: true })
+
+            if (!messStatus) {
+                res.json("something went wrong");
+            }
+
+        } catch (error) {
+            return next(error);
+        }
+
+        res.json("blocked all");
+
     }
 }
 
