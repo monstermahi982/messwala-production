@@ -18,8 +18,6 @@ router.put('/info/:id', ipLimiting, auth, messController.updateInfo)
 
 router.put('/poster/:id', ipLimiting, upload, messController.updatePoster)
 
-router.post('/', auth, ipLimiting, messController.addMess)
-
 router.get('/statics/:id', ipLimiting, messController.ownerStatics)
 
 module.exports = router;

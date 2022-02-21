@@ -9,7 +9,7 @@ const Menu = require('../Models/menu');
 const redis = require('../Database/redis');
 const mongoose = require('mongoose');
 const AWS = require('aws-sdk');
-const uuid = require('uuid');
+const { v4: uuid } = require('uuid');
 // import { AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET } from '../Configs'
 
 const s3 = new AWS.S3({
@@ -346,50 +346,6 @@ const messController = {
                 res.json({ data: "someting went wrong" });
             }
         })
-    },
-
-    async addMess(req, res, next) {
-
-        const registerSchema = Joi.object({
-            mess_name: Joi.string().max(30).min(3).required(),
-            thali_price: Joi.number().required(),
-            mess_address: Joi.string().max(150).min(10).required(),
-            mess_poster: Joi.string().uri().required().allow(''),
-            parcel_service: Joi.boolean().required(),
-            non_veg: Joi.boolean().required(),
-            lunch_time: Joi.string().max(30).min(3).required(),
-            dinner_time: Joi.string().max(30).min(3).required()
-        })
-
-        const { error } = await registerSchema.validate(req.body);
-
-        if (error) {
-            return next(error);
-        }
-
-        const { mess_name, mess_address, thali_price, mess_poster, lunch_time, dinner_time, parcel_service, non_veg } = req.body;
-
-        const new_mess = Mess({
-            mess_name,
-            thali_price,
-            mess_address,
-            mess_poster,
-            parcel_service,
-            lunch_time,
-            dinner_time,
-            non_veg
-        })
-
-        let id;
-
-        try {
-            const result = await new_mess.save();
-            id = result._id
-        } catch (e) {
-            return next(e);
-        }
-
-        res.json(id)
     },
 
     async ownerStatics(req, res, next) {
