@@ -44,7 +44,7 @@ const messController = {
                 const { _id, mess_name, slug, thali_price, mess_address, mess_poster } = messes[i];
 
                 // view, like, dislike code
-                views = await View.find().count();
+                views = await View.find({ mess_id: _id }).count();
                 like_count = await Action.find({ mess_id: _id, like: true }).count();
 
 
@@ -89,21 +89,31 @@ const messController = {
 
 
         // counting user view
-        // const { email, name } = req.user;
-        // try {
-        //     const exist = await View.exists({ email: email, mess_id: req.params.id })
-        //     if (!exist) {
+        const { email, name } = req.user;
+        try {
 
-        //         const view = new View({
-        //             "mess_id": req.params.id,
-        //             email,
-        //             name
-        //         })
-        //         const result = await view.save();
-        //     }
-        // } catch (e) {
-        //     return next(e);
-        // }
+            const mess_result = await Mess.findOne({ slug: req.params.id }).select('-updatedAt -__v');
+
+            if (mess_result !== null) {
+
+                const exist = await View.exists({ email: email, mess_id: mess_result._id })
+
+                if (!exist) {
+
+                    const view = new View({
+                        "mess_id": mess_result._id,
+                        email,
+                        name
+                    })
+                    const result = await view.save();
+                }
+
+            }
+
+
+        } catch (e) {
+            return next(e);
+        }
 
         // using cached data
         const cachemess = await redis.get(req.params.id);
