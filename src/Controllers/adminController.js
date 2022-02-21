@@ -31,7 +31,7 @@ const adminController = {
 
             admin = await admin.save();
             if (!admin) {
-                return res.json({ data: "nods" })
+                return res.status(401).json("something went wrong")
             }
 
         } catch (error) {
@@ -98,7 +98,7 @@ const adminController = {
                 return res.json("wrong password")
             }
 
-            token = await JwtService.sign({ email: admin.email, name: admin.name, super_user: admin.super_user })
+            token = await JwtService.sign({ email: admin.email, name: admin.name, super_user: admin.super_user, admin: true })
 
         } catch (error) {
             return next(error);

@@ -12,14 +12,19 @@ const adminToken = async (req, res, next) => {
 
     try {
 
-        const { name, email } = await JwtService.verify(token);
+        const { name, email, admin } = await JwtService.verify(token);
         if (!email) {
             return res.json("not verified")
         }
-        const admin = {
+
+        if (!admin || admin === false) {
+            return res.status(401).json("not verified");
+        }
+
+        const adminData = {
             name, email
         }
-        req.admin = admin;
+        req.admin = adminData;
 
     } catch (error) {
         return next(error);
