@@ -129,7 +129,7 @@ const messController = {
             // menu = await Mess.findOne({ $or: [{ slug: req.params.id }, { _id: req.params.id }] }).select('-updatedAt -__v').sort({ _id: -1 });
             menu = await Mess.findOne({ slug: req.params.id }).select('-updatedAt -__v');
             if (!menu) {
-                return res.json({ data: "id not found" })
+                return res.json("mess not found")
             }
 
         } catch (e) {
@@ -174,7 +174,7 @@ const messController = {
             }
 
         } catch (error) {
-            console.log(error);
+            return next(error);
         }
 
         try {
