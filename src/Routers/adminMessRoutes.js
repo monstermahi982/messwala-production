@@ -2,12 +2,15 @@ const express = require('express');
 const adminMessController = require('../Controllers/adminMessController');
 const adminToken = require('../Middlewares/adminToken');
 const ipLimiting = require('../Middlewares/ipLimiting');
+const upload = require('../Services/UploadImage');
 
 const router = express.Router();
 
 router.get('/', ipLimiting, adminToken, adminMessController.getAll)
 
 router.post('/', ipLimiting, adminToken, adminMessController.addMess)
+
+router.post('/upload-poster', ipLimiting, upload, adminMessController.posterImageUpload)
 
 router.put('/blockall', ipLimiting, adminToken, adminMessController.blockAllMess)
 

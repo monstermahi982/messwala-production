@@ -6,6 +6,13 @@ const Owner = require('../Models/owner');
 const Menu = require('../Models/menu');
 const Comment = require('../Models/comment');
 const redis = require('../Database/redis');
+const { v4: uuid } = require('uuid');
+const AWS = require('aws-sdk');
+
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_BUCKET_KEY,
+    secretAccessKey: process.env.AWS_SECRET_BUCKET_KEY
+})
 
 const adminMessController = {
     async getAll(req, res, next) {
@@ -277,6 +284,47 @@ const adminMessController = {
         }
 
         res.json({ data: mess_id + " " + owner_id + " " + new_menu._id })
+
+    },
+
+    async posterImageUpload(req, res, next) {
+
+        let poster_image;
+
+        if (req.file === undefined) {
+            return res.json("no file selected");
+        }
+
+        // checking file size
+        if (req.file.size > 10000000) {
+            return res.json("max limit exists");
+        }
+
+        // getting file extension
+        const fileExtension = req.file.originalname.split('.')[1]
+
+        // params for image
+        const params = {
+            Bucket: `${process.env.AWS_BUCKET_NAME}/posters`,
+            Key: `${uuid()}.${fileExtension}`,
+            Body: req.file.buffer,
+            ContentType: "image/jpeg"
+        };
+
+        // uploading image to aws s3
+        s3.upload(params, async function (err, data) {
+            if (err) {
+                return next(err);
+            }
+
+            if (data) {
+                console.log("Uploaded in:", data.Location);
+                poster_image = data.Location;
+                res.json(poster_image)
+            } else {
+                res.json({ data: "someting went wrong" });
+            }
+        })
 
     },
 
