@@ -4,3 +4,4 @@ serverless.yml
 yarn.lock
 package-lock.json
 handler.js
+.env
