@@ -21,6 +21,7 @@ const messRoutes = require('./src/Routers/messRoutes');
 const menuRoutes = require('./src/Routers/menuRoutes');
 const itemRoutes = require('./src/Routers/itemRoutes');
 const staticsRoutes = require('./src/Routers/staticsRoutes');
+const adminMenuRoutes = require('./src/Routers/adminMenuRoutes');
 
 const app = express();
 
@@ -67,6 +68,7 @@ app.use('/api/comment', commentRoutes);
 app.use('/api/admin/mess', adminMessRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/static', staticsRoutes);
+app.use('/api/admin/menu', adminMenuRoutes);
 
 // error handlers
 app.use(userAuthHandler);
