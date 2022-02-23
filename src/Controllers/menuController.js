@@ -88,68 +88,6 @@ const menuController = {
             }
         })
     },
-
-    async getMenu(req, res, next) {
-
-        let menus = [];
-        try {
-
-            menus = await Menu.find().select('-updatedAt -__v').sort({ _id: -1 });
-
-            if (!menus) {
-                return res.json("no record found");
-            }
-
-        } catch (e) {
-            return next(e);
-        }
-
-        res.json(menus)
-    },
-
-    async getOneMenu(req, res, next) {
-
-        let menu;
-
-        try {
-
-            // checking object id valid or not
-            const isValid = mongoose.Types.ObjectId.isValid(req.params.id);
-            if (!isValid) {
-                return res.json({ data: "id is not valid" })
-            }
-
-            menu = await Menu.findById({ _id: req.params.id }).select('-updatedAt -__v').sort({ _id: -1 });
-
-        } catch (e) {
-            return next(e);
-        }
-
-        res.json(menu)
-    },
-
-    async deleteMenu(req, res, next) {
-        let menu;
-        try {
-
-            // checking object id valid or not
-            const isValid = mongoose.Types.ObjectId.isValid(req.params.id);
-            if (!isValid) {
-                return res.json({ data: "id is not valid" })
-            }
-
-            menu = await Menu.findOneAndRemove({ _id: req.params.id });
-
-            if (!menu) {
-                return res.json({ data: "not to delete" })
-            }
-
-        } catch (err) {
-            return next(err);
-        }
-
-        res.json(menu);
-    },
 }
 
 module.exports = menuController;

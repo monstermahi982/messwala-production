@@ -14,9 +14,15 @@ router.post('/upload-poster', ipLimiting, upload, adminMessController.posterImag
 
 router.put('/blockall', ipLimiting, adminToken, adminMessController.blockAllMess)
 
-router.get('/:id', ipLimiting, adminToken, adminMessController.getOne)
+router.put('/poster', ipLimiting, adminToken, upload, adminMessController.updatePoster)
 
 router.put('/:id', ipLimiting, adminToken, adminMessController.updateInfo)
+
+router.get('/:id', ipLimiting, adminToken, adminMessController.getOne)
+
+router.delete('/:id', ipLimiting, adminMessController.deleteMess)
+
+router.put('/info/:id', ipLimiting, adminToken, adminMessController.updateInfo)
 
 router.put('/owner/:id', ipLimiting, adminToken, adminMessController.updateOwner)
 
@@ -24,6 +30,5 @@ router.put('/block/:id', ipLimiting, adminToken, adminMessController.blockMess)
 
 router.put('/unblock/:id', ipLimiting, adminToken, adminMessController.unblockMess)
 
-router.delete('/:id', ipLimiting, adminMessController.deleteMess)
 
 module.exports = router;

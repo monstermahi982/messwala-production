@@ -1,21 +1,13 @@
 const express = require('express');
 const menuController = require('../Controllers/menuController');
 const upload = require('../Services/UploadImage');
-const auth = require('../Middlewares/auth');
-const adminToken = require('../Middlewares/adminToken');
 const ipLimiting = require('../Middlewares/ipLimiting');
+const ownerToken = require('../Middlewares/ownerToken');
 
 const router = express.Router();
 
-router.get('/', ipLimiting, adminToken, menuController.getMenu)
+router.post('/', ipLimiting, ownerToken, menuController.uploadMenu)
 
-router.get('/:id', ipLimiting, auth, menuController.getOneMenu)
-
-router.post('/', ipLimiting, auth, menuController.uploadMenu)
-
-router.post('/uploadImage', ipLimiting, auth, upload, menuController.uploadImage)
-
-router.delete('/:id', ipLimiting, menuController.deleteMenu)
-
+router.post('/uploadImage', ipLimiting, ownerToken, upload, menuController.uploadImage)
 
 module.exports = router;

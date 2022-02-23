@@ -73,7 +73,7 @@ const ownerController = {
                 return res.json("wrong password")
             }
 
-            token = JwtService.sign({ name: owner.owner_name, id: owner._id, email: owner.owner_email, mess_id: owner.mess_id })
+            token = JwtService.sign({ name: owner.owner_name, id: owner._id, email: owner.owner_email, mess_id: owner.mess_id, owner_status: true })
 
         } catch (e) {
             return next(e);

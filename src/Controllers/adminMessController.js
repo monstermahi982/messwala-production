@@ -7,6 +7,7 @@ const Menu = require('../Models/menu');
 const Comment = require('../Models/comment');
 const redis = require('../Database/redis');
 const { v4: uuid } = require('uuid');
+const mongoose = require('mongoose');
 const AWS = require('aws-sdk');
 
 const s3 = new AWS.S3({
@@ -287,6 +288,47 @@ const adminMessController = {
 
     },
 
+    async updateInfo(req, res, next) {
+
+        // checking object id valid or not
+        const isValid = mongoose.Types.ObjectId.isValid(req.params.id);
+        if (!isValid) {
+            return res.json({ data: "id is not valid" })
+        }
+
+        const infoSchema = Joi.object({
+            mess_name: Joi.string().max(30).min(3).required(),
+            thali_price: Joi.number().required(),
+            mess_address: Joi.string().max(150).min(10).required(),
+            parcel_service: Joi.boolean().required(),
+            non_veg: Joi.boolean().required(),
+            lunch_time: Joi.string().max(30).min(3).required(),
+            dinner_time: Joi.string().max(30).min(3).required()
+        })
+
+        const { error } = await infoSchema.validate(req.body);
+
+        if (error) {
+            return next(error);
+        }
+
+        const { mess_name, thali_price, mess_address, parcel_service, non_veg, dinner_time, lunch_time } = req.body;
+
+        let result;
+
+        try {
+
+            result = await Mess.findOneAndUpdate({ _id: req.params.id }, {
+                mess_name, thali_price, mess_address, parcel_service, non_veg, dinner_time, lunch_time
+            }, { new: true });
+
+        } catch (e) {
+            return res.json(e)
+        }
+
+        res.json("info updated");
+    },
+
     async posterImageUpload(req, res, next) {
 
         let poster_image;
@@ -326,6 +368,50 @@ const adminMessController = {
             }
         })
 
+    },
+
+    async updatePoster(req, res, next) {
+        let mess_poster;
+
+        if (req.file === undefined) {
+            return res.json("no file selected");
+        }
+
+        // checking file size
+        if (req.file.size > 10000000) {
+            return res.json("max limit exists");
+        }
+
+        // getting file extension
+        const fileExtension = req.file.originalname.split('.')[1]
+
+        const params = {
+            Bucket: `${process.env.AWS_BUCKET_NAME}/posters`,
+            Key: `${uuid()}.${fileExtension}`,
+            Body: req.file.buffer,
+            ContentType: "image/jpeg"
+        };
+
+        // uploading image to aws s3
+        s3.upload(params, async function (err, data) {
+            if (err) {
+                console.log("Error", err);
+                return next(err);
+            }
+
+            if (data) {
+                console.log("Uploaded in:", data.Location);
+                mess_poster = data.Location;
+
+                const updateData = await Mess.findByIdAndUpdate({ _id: req.body.id }, {
+                    mess_poster
+                }, { new: true });
+
+                res.json(updateData);
+            } else {
+                res.json({ data: "someting went wrong" });
+            }
+        })
     },
 
     async blockMess(req, res, next) {
