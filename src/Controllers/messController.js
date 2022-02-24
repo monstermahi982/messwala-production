@@ -80,7 +80,7 @@ const messController = {
 
         // caching all messes data
         await redis.set("allmenus", JSON.stringify(allmess));
-        await redis.expire("allmenus", 30);
+        await redis.expire("allmenus", 60 * 2);
 
         res.json(allmess)
     },
@@ -202,7 +202,7 @@ const messController = {
 
         // caching all mess data
         await redis.set(req.params.id, JSON.stringify(menu_data));
-        await redis.expire(req.params.id, 30);
+        await redis.expire(req.params.id, 60 * 2);
 
         res.json(menu_data)
     },
@@ -267,7 +267,7 @@ const messController = {
 
         // caching all mess data
         await redis.set(req.params.id, JSON.stringify(menu_data));
-        await redis.expire(req.params.id, 30);
+        await redis.expire(req.params.id, 60 * 2);
 
         res.json(menu_data)
     },
