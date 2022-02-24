@@ -22,7 +22,7 @@ const userAuthController = {
         }
 
         await redis.set('usersData', JSON.stringify(users));
-        await redis.expire('usersData', 60)
+        await redis.expire('usersData', 60 * 60 * 12)
         res.json(users);
     },
 
