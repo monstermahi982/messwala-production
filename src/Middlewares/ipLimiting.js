@@ -7,10 +7,10 @@ const ipLimiting = async (req, res, next) => {
     const requests = await redis.incr(ip);
 
     if (requests == 1) {
-        await redis.expire(ip, 60)
+        await redis.expire(ip, 60 * 2)
     }
 
-    if (requests > 10) {
+    if (requests > 100) {
         return res.status(500).json({ data: "request timeout" });
     }
 
