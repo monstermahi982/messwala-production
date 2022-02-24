@@ -50,7 +50,7 @@ if (mode === 'dev') {
 
 
 // cors
-app.use(cors({ origin: ['http://localhost:3000', 'https://messwala-frontend.vercel.app', 'https://messwala-admin.vercel.app', 'https://messwala.online', 'https://www.messwala.online'] }))
+app.use(cors({ origin: ['http://localhost:3000', 'https://messwala-frontend.vercel.app', 'https://messwala-admin.vercel.app', 'https://messwala.online', 'https://www.messwala.online', 'https://appaadmin.messwala.online'] }))
 
 // express congfi
 app.use(express.json())
