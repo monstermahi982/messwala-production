@@ -8,12 +8,6 @@ const userAuthController = {
 
     async getUsers(req, res, next) {
 
-        // using cached data
-        const cacheUsers = await redis.get('usersData');
-        if (cacheUsers !== null) {
-            return res.json(JSON.parse(cacheUsers))
-        }
-
         let users = [];
         try {
             users = await User.find().select('-updatedAt -__v').sort({ _id: -1 });
@@ -21,8 +15,6 @@ const userAuthController = {
             return next(error);
         }
 
-        await redis.set('usersData', JSON.stringify(users));
-        await redis.expire('usersData', 60 * 60 * 12)
         res.json(users);
     },
 
