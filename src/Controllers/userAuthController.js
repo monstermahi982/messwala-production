@@ -49,7 +49,7 @@ const userAuthController = {
         const registerSchema = Joi.object({
             name: Joi.string().max(50).min(3).required(),
             email: Joi.string().email().required(),
-            phone: Joi.string().length(10).pattern(/^[0-9]+$/)
+            phone: Joi.string().length(10).pattern(/^[0-9]+$/).allow('')
         })
 
         const { error } = await registerSchema.validate(req.body);
