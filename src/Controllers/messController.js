@@ -89,24 +89,33 @@ const messController = {
 
 
         // counting user view
-        const { email, name } = req.user;
+        // const { email, name } = req.user;
         try {
 
             const mess_result = await Mess.findOne({ slug: req.params.id }).select('-updatedAt -__v');
 
             if (mess_result !== null) {
 
-                const exist = await View.exists({ email: email, mess_id: mess_result._id })
+                // const exist = await View.exists({ email: email, mess_id: mess_result._id })
 
-                if (!exist) {
+                // if (!exist) {
 
-                    const view = new View({
-                        "mess_id": mess_result._id,
-                        email,
-                        name
-                    })
-                    const result = await view.save();
-                }
+                //     const view = new View({
+                //         "mess_id": mess_result._id,
+                //         email,
+                //         name
+                //     })
+                //     const result = await view.save();
+                // }
+
+                let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+                ip = ip.toString();
+
+                const new_view = new View({
+                    ip, mess_id: mess_result._id
+                })
+
+                await new_view.save();
 
             }
 
