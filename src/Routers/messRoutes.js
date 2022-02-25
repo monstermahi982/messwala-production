@@ -11,7 +11,7 @@ router.get('/', ipLimiting, messController.getAllMess)
 
 // router.get('/:id', auth, messController.getMessMenu)
 
-router.get('/:id', ipLimiting, auth, messController.getMessMenu)
+router.get('/:id', ipLimiting, messController.getMessMenu)
 
 router.get('/info/:id', ipLimiting, ownerToken, messController.messDeatils)
 
