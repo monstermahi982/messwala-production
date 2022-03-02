@@ -22,6 +22,8 @@ const menuRoutes = require('./src/Routers/menuRoutes');
 const itemRoutes = require('./src/Routers/itemRoutes');
 const staticsRoutes = require('./src/Routers/staticsRoutes');
 const adminMenuRoutes = require('./src/Routers/adminMenuRoutes');
+const referalRoutes = require('./src/Routers/referalRoutes');
+const referalOfferRoutes = require('./src/Routers/referalOfferRoutes');
 
 const app = express();
 
@@ -65,6 +67,8 @@ app.use('/api/mess', messRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/item', itemRoutes);
 app.use('/api/comment', commentRoutes);
+app.use('/api/referal', referalRoutes);
+app.use('/api/referal/offer', referalOfferRoutes);
 app.use('/api/admin/mess', adminMessRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/static', staticsRoutes);
