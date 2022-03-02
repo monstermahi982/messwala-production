@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const User = require('../Models/user');
+const Referal = require('../Models/referal');
 const redis = require('../Database/redis');
 const JwtService = require('../Services/JwtService');
 
@@ -41,7 +42,8 @@ const userAuthController = {
         const registerSchema = Joi.object({
             name: Joi.string().max(50).min(3).required(),
             email: Joi.string().email().required(),
-            phone: Joi.string().length(10).pattern(/^[0-9]+$/).allow('')
+            phone: Joi.string().length(10).pattern(/^[0-9]+$/).allow(''),
+            refer_id: Joi.string().allow('')
         })
 
         const { error } = await registerSchema.validate(req.body);
@@ -50,7 +52,7 @@ const userAuthController = {
             return next(error);
         }
 
-        const { name, email, phone } = req.body;
+        const { name, email, phone, refer_id } = req.body;
 
         // checking user in db
         try {
@@ -66,6 +68,43 @@ const userAuthController = {
             return next(e);
         }
 
+        try {
+
+            if (refer_id) {
+
+                const referal_user_exists = await User.findOne({ refer_id });
+
+                let referal_user;
+
+                if (referal_user_exists) {
+
+                    const refer_data = await Referal.findOne({ refer_id });
+
+                    if (refer_data) {
+
+                        referal_user = await Referal.findOneAndUpdate({ refer_id }, {
+                            refer_count: refer_data.refer_count + 1
+                        }, { new: true });
+
+                    } else {
+
+                        const new_referal = Referal({
+                            name, refer_id
+                        })
+
+                        referal_user = await new_referal.save();
+
+                    }
+
+                }
+
+            }
+
+        } catch (error) {
+            return next(error);
+        }
+
+
         const user = new User({
             name,
             email,
@@ -76,7 +115,7 @@ const userAuthController = {
 
         try {
             const result = await user.save();
-            token = await JwtService.sign({ id: result._id, name: result.name, email: result.email });
+            token = await JwtService.sign({ id: result._id, name: result.name, email: result.email, refer_id: result.refer_id });
         } catch (e) {
             return next(e);
         }
@@ -117,7 +156,7 @@ const userAuthController = {
                     return res.json("your account is blocked");
                 }
 
-                token = JwtService.sign({ name: user.name, id: user._id, email: user.email });
+                token = JwtService.sign({ name: user.name, id: user._id, email: user.email, refer_id: user.refer_id });
             }
 
         } catch (e) {
