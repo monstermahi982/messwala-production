@@ -89,7 +89,7 @@ const userAuthController = {
                     } else {
 
                         const new_referal = Referal({
-                            name, refer_id
+                            name: referal_user_exists.name, refer_id: referal_user_exists.refer_id
                         })
 
                         referal_user = await new_referal.save();
