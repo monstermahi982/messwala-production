@@ -41,7 +41,7 @@ const messController = {
             for (let i = 0; i < messes.length; i++) {
 
                 // array destructring
-                const { _id, mess_name, slug, thali_price, mess_address, mess_poster } = messes[i];
+                const { _id, mess_name, slug, thali_price, mess_address, mess_poster, google_location } = messes[i];
 
                 // view, like, dislike code
                 views = await View.find({ mess_id: _id }).count();
@@ -67,7 +67,8 @@ const messController = {
                     mess_poster,
                     views,
                     like_count,
-                    menu_list
+                    menu_list,
+                    google_location
                 };
 
                 // adding data in array

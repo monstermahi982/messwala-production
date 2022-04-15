@@ -17,6 +17,7 @@ const messSchema = new Schema({
     lunch_time: { type: String, required: true },
     dinner_time: { type: String, required: true },
     non_veg: { type: Boolean, required: false, default: false },
+    google_location: { type: String, required: false, default: "18.4602393,73.8345744" },
     is_active: { type: Boolean, required: false, default: false }
 
 }, { timestamps: { currentTime: () => Math.floor(Date.now() / 1000) } })
